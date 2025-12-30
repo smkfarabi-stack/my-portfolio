@@ -1,278 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | SMK Farabi</title>
-    
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Animation</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f2f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
 
-    <style>
-        /* This container holds the button and the orbiting icons */
-        .orbit-container {
-            position: relative;
-            width: 300px;
-            height: 180px; /* Height for the half circle */
-            display: flex;
-            justify-content: center;
-            align-items: flex-end; /* Align button to bottom */
-            margin-top: 20px;
-        }
+  .contact-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
 
-        /* The Main Contact Button */
-        .orbit-container .btn {
-            z-index: 10;
-            position: relative;
-        }
+  /* Contact Me Button & Pulse Animation */
+  .contact-btn {
+    background-color: #fff;
+    border: 2px solid #333;
+    padding: 10px 25px;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 60px;
+    position: relative;
+    z-index: 2;
+    animation: pulse 2s infinite ease-in-out;
+  }
 
-        /* The Icons Wrapper */
-        .social-orbit {
-            position: absolute;
-            bottom: 25px; /* Aligns with center of button */
-            left: 50%;
-            width: 0;
-            height: 0;
-        }
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+  }
 
-        /* Individual Icons */
-        .social-orbit a {
-            position: absolute;
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            width: 40px;
-            height: 40px;
-            background: transparent;
-            border: 2px solid #0ef; /* Matches your likely neon theme */
-            border-radius: 50%;
-            font-size: 20px;
-            color: #0ef;
-            text-decoration: none;
-            transition: .5s ease;
-            /* Formula to place them in an arc */
-            transform-origin: bottom center; 
-        }
+  /* Icons Container and Layout */
+  .icons-wrapper {
+    position: relative;
+    width: 300px;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
 
-        .social-orbit a:hover {
-            background: #0ef;
-            color: #1f242d; /* Assuming dark background color */
-            box-shadow: 0 0 20px #0ef;
-        }
+  .icon-btn {
+    width: 50px;
+    height: 50px;
+    background-color: #fff;
+    border: 2px solid #333;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: #333;
+    text-decoration: none;
+    position: absolute;
+    transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 2;
+  }
 
-        /* Positioning the 3 icons in a half circle (approx 100px radius) */
-        /* Icon 1: Left */
-        .social-orbit a:nth-child(1) {
-            transform: translate(-50%, 50%) rotate(-60deg) translate(0, -100px) rotate(60deg);
-        }
-        /* Icon 2: Middle (Top) */
-        .social-orbit a:nth-child(2) {
-            transform: translate(-50%, 50%) rotate(0deg) translate(0, -100px) rotate(0deg);
-        }
-        /* Icon 3: Right */
-        .social-orbit a:nth-child(3) {
-            transform: translate(-50%, 50%) rotate(60deg) translate(0, -100px) rotate(-60deg);
-        }
-    </style>
+  /* Final positions based on the sketch */
+  .icon-f { left: 0; bottom: 50px; }
+  .icon-m1 { left: 50%; transform: translateX(-50%); bottom: 0; }
+  .icon-m2 { right: 0; bottom: 20px; }
+
+  /* Connector Line */
+  .connector-line {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    height: 40px;
+    /* Path for the curved line from f to m2 */
+    width: 250px;
+    border-bottom: 5px solid #333;
+    border-radius: 0 0 50% 50% / 0 0 100% 100%;
+    z-index: 1;
+    transform-origin: left center;
+    transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+
+  /* Initial State (Hidden behind 'f') */
+  .contact-container:not(:hover) .icon-m1,
+  .contact-container:not(:hover) .icon-m2 {
+    left: 0;
+    bottom: 50px;
+    transform: translateX(0) scale(0.5);
+    opacity: 0;
+  }
+
+  .contact-container:not(:hover) .connector-line {
+    width: 0;
+    opacity: 0;
+  }
+
+  /* Staggered Animation Delays for a smooth slide effect */
+  .contact-container:hover .icon-m1 {
+    transition-delay: 0.1s;
+  }
+  .contact-container:hover .icon-m2 {
+    transition-delay: 0.2s;
+  }
+
+</style>
 </head>
 <body>
 
-    <header class="header">
-        <a href="#" class="logo">Portfolio.</a>
+<div class="contact-container">
+  <button class="contact-btn">Contact me</button>
 
-        <nav class="navbar">
-            <a href="#home" class="active">Home</a>
-            <a href="#about">About</a>
-            <a href="#humaymud-projects">Humaymud</a> <a href="#skills">Skills</a>
-            <a href="#projects">Projects</a> 
-            <a href="#contact">Contact</a>
-        </nav>
+  <div class="icons-wrapper">
+    <div class="connector-line"></div>
 
-        <div class="bx bx-menu" id="menu-icon"></div>
-    </header>
+    <a href="#" class="icon-btn icon-f">
+      <i class="fab fa-facebook-f"></i>
+    </a>
 
-    <section class="home" id="home">
-        <div class="home-content">
-            <h3>Hello, It's Me</h3>
-            <h1>SMK Farabi</h1>
-            <h3 style="font-size: 1.5rem; margin-top: 5px; color: #0ef;">Founder of Humaymud Projects</h3>
-            <h3>And I'm a <span class="multiple-text"></span></h3>
-            
-            <p>BSc in Chemistry (2nd Year) at Jahangirnagar University. 
-            Merging scientific discipline with digital creativity.</p>
-            
-            <div class="orbit-container">
-                <div class="social-orbit">
-                    <a href="https://www.facebook.com/profile.php?id=61576848728650" target="_blank"><i class='bx bxl-facebook'></i></a>
-                    <a href="https://www.linkedin.com/in/s-m-k-farabi2005" target="_blank"><i class='bx bxl-linkedin'></i></a>
-                    <a href="mailto:smkfarabi@gmail.com"><i class='bx bxs-envelope'></i></a>
-                </div>
-                
-                <a href="#contact" class="btn">Contact Me</a>
-            </div>
-        </div>
+    <a href="#" class="icon-btn icon-m1">
+      <i class="fas fa-envelope"></i>
+    </a>
 
-        <div class="home-img">
-            <img src="farabi.jpg" alt="Profile Picture of SMK Farabi">
-        </div>
-    </section>
-
-    <section class="about" id="about">
-        <div class="about-img">
-            <img src="farabi.jpg" alt="About Me">
-        </div>
-
-        <div class="about-content">
-            <h2 class="heading">About <span>Me</span></h2>
-            <h3>Aspiring Scientist & Web Developer</h3>
-            <p>
-                I am currently pursuing a BSc in Chemistry (2nd Year) at <strong>Jahangirnagar University</strong>. 
-                Beyond my academic studies, I am deeply involved in extracurricular activities:
-            </p>
-            
-            <div class="club-activities">
-                <div class="club-item">
-                    <h4>Member at E-Business and Entrepreneurship Club, JU</h4>
-                    <ul>
-                        <li>Completed Campus Catalyst Program</li>
-                    </ul>
-                </div>
-                
-                <div class="club-item">
-                    <h4>Scientific Research Crew at Jahangirnagar Science Club</h4>
-                    <ul>
-                        <li>Volunteered at 7th National Science Fest</li>
-                        <li>Served as an Invigilator</li>
-                    </ul>
-                </div>
-            </div>
-
-            <p>
-                I pride myself on being a fast learner with high accuracy. My background in science has honed my analytical skills, while my role in clubs has developed my logistics and management capabilities.
-            </p>
-            <a href="#contact" class="btn">Let's Talk</a>
-        </div>
-    </section>
-
-    <section class="humaymud-section" id="humaymud-projects">
-        <div style="text-align: center;">
-            <h2 class="heading">Humaymud <span>Projects</span></h2>
-            
-            <div style="background: #323946; padding: 30px; border-radius: 20px; border: 2px solid #0ef; display: inline-block; margin-top: 20px; max-width: 800px;">
-                <i class='bx bx-bot' style="font-size: 50px; color: #0ef; margin-bottom: 15px;"></i>
-                <h3 style="font-size: 2rem; margin-bottom: 15px;">AI Innovation Hub</h3>
-                <p style="font-size: 1.1rem; line-height: 1.6;">
-                    Humaymud Projects is an AI-based project making company. We specialize in creating intelligent solutions for modern problems.
-                    <br><br>
-                    <strong>Status:</strong> Currently unregistered.
-                    <br>
-                    <strong>Founder:</strong> SMK Farabi.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <section class="skills" id="skills">
-        <h2 class="heading">My <span>Skills</span></h2>
-
-        <div class="skills-container">
-            <div class="skills-box">
-                <i class='bx bx-code-alt'></i>
-                <h3>Hard Skills</h3>
-                <p>Content Writing</p>
-                <p>Project management </p>
-                <p>Scientific Writing</p>
-                <p>Front End Web Development</p>
-                <p>Python & Backend (FastAPI)</p>
-                <p>Web Scraping (Playwright)</p>
-                <p>AI Integration </p>
-                <p>prompt programming </p>
-                
-            </div>
-
-            <div class="skills-box">
-                <i class='bx bx-user-voice'></i>
-                <h3>Soft Skills</h3>
-                <p>Fast Learning with Accuracy</p>
-                <p>Logistics & Management</p>
-                <p>Team Collaboration</p>
-            </div>
-        </div>
-    </section>
-
-   <section class="projects" id="projects">
-    <h2 class="heading">My <span>Projects</span></h2>
-
-    <div class="projects-container">
-        
-        <div class="projects-box">
-            <i class='bx bx-mosque'></i> <h3>Namaz Time BD</h3>
-            
-            <p>
-                A dedicated web application for checking accurate prayer times in Bangladesh. 
-                Designed with a clean interface to assist users in their daily religious observances.
-            </p>
-            
-            <ul style="text-align: left; margin: 15px 0; padding-left: 20px;">
-                <li><strong>Features:</strong> Accurate Geo-location timings</li>
-                <li><strong>Tech Stack:</strong> HTML, CSS, JavaScript</li>
-            </ul>
-
-            <a href="https://smkfarabi-stack.github.io/namaz-time-bd/" target="_blank" class="btn">View Project</a>
-        </div>
-
-        <div class="projects-box">
-            <i class='bx bx-search-alt'></i>
-            
-            <h3>HumayMud Search Engine</h3>
-            
-            <p>
-                An AI-powered vertical search engine designed to locate and verify academic resources (PDF/EPUB). 
-                It uses a multi-layer verification system to ensure links are safe.
-            </p>
-            
-            <ul style="text-align: left; margin: 15px 0; padding-left: 20px;">
-                <li><strong>AI:</strong> Google Gemini 1.5</li>
-                <li><strong>Core:</strong> Python, FastAPI, Playwright</li>
-            </ul>
-
-            <a href="https://github.com/smkfarabi-stack/humaymud-browser" target="_blank" class="btn">View on GitHub</a>
-        </div>
-    </div>
-</section>
-
-    <section class="contact" id="contact">
-        <h2 class="heading">Contact <span>Me</span></h2>
-
-        <form action="mailto:smkfarabi@gmail.com" method="post" enctype="text/plain">
-            <div class="input-box">
-                <input type="text" placeholder="Full Name">
-                <input type="email" placeholder="Email Address">
-            </div>
-            <div class="input-box">
-                <input type="number" placeholder="Mobile Number">
-                <input type="text" placeholder="Email Subject">
-            </div>
-            <textarea name="" id="" cols="30" rows="10" placeholder="Your Message"></textarea>
-            <input type="submit" value="Send Message" class="btn">
-        </form>
-    </section>
-
-    <footer class="footer">
-        <div class="footer-text">
-            <p>Copyright &copy; 2025 by SMK Farabi | All Rights Reserved.</p>
-        </div>
-
-        <div class="footer-iconTop">
-            <a href="#home"><i class='bx bx-up-arrow-alt'></i></a>
-        </div>
-    </footer>
-
-    <script src="https://unpkg.com/scrollreveal"></script>
-    <script src="https://unpkg.com/typed.js@2.0.15/dist/typed.umd.js"></script>
-    <script src="script.js"></script>
+    <a href="#" class="icon-btn icon-m2">
+      <i class="fab fa-linkedin-in"></i>
+    </a>
+  </div>
+</div>
 
 </body>
 </html>
