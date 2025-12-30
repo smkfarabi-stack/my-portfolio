@@ -2,170 +2,241 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | SMK Farabi</title>
+    <title>SMK Farabi - Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* --- RESET & BASIC STYLES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f4f9; color: #333; line-height: 1.6; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- HEADER / HERO SECTION --- */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+        }
+        header h1 { font-size: 3rem; margin-bottom: 10px; }
+        header p { font-size: 1.2rem; opacity: 0.9; }
+        .designation {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 50px;
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        /* --- SECTIONS COMMON STYLES --- */
+        section { padding: 60px 20px; max-width: 1100px; margin: 0 auto; }
+        h2 { text-align: center; margin-bottom: 40px; font-size: 2rem; color: #444; }
+
+        /* --- HUMAYMUD PROJECTS SECTION --- */
+        .humaymud-section {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 40px;
+            border-left: 5px solid #764ba2;
+        }
+        .humaymud-section h3 { font-size: 1.5rem; margin-bottom: 15px; color: #764ba2; }
+
+        /* --- PORTFOLIO GRID --- */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .project-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .project-card:hover { transform: translateY(-5px); }
+        .card-content { padding: 20px; }
+        .card-content h3 { margin-bottom: 10px; color: #333; }
+        .btn-visit {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 20px;
+            background-color: #667eea;
+            color: white;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        .btn-visit:hover { background-color: #5a6fd6; }
+
+        /* --- CIRCULAR CONTACT SECTION --- */
+        .contact-container {
+            position: relative;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end; /* Align to bottom so half-circle goes up */
+            margin-top: 50px;
+            overflow: hidden; /* Hide overflow if needed */
+        }
+
+        .center-btn {
+            position: absolute;
+            bottom: 20px; /* Position at the bottom center */
+            z-index: 10;
+            background: #333;
+            color: white;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .center-btn:hover { transform: scale(1.05); }
+
+        /* The icons wrapper */
+        .orbit-icons {
+            position: absolute;
+            bottom: 20px; /* Same baseline as button */
+            width: 300px; /* Width of the arc */
+            height: 150px; /* Height of the half circle */
+        }
+
+        .icon-link {
+            position: absolute;
+            bottom: 0;
+            left: 50%; /* Start from center */
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            transform-origin: bottom center; /* Pivot point for rotation */
+        }
+
+        /* Calculating Positions for Half Circle (180 degrees)
+           We use transform rotate to place them along the arc.
+           Radius is approx 120px from center.
+        */
+        
+        /* 1. Left-most (GitHub) */
+        .icon-link:nth-child(1) {
+            transform: translateX(-50%) rotate(-75deg) translateY(-140px) rotate(75deg);
+        }
+        /* 2. Left-mid (LinkedIn/Twitter) */
+        .icon-link:nth-child(2) {
+            transform: translateX(-50%) rotate(-35deg) translateY(-140px) rotate(35deg);
+        }
+        /* 3. Top (Email/Phone - if you had 5, this is the middle) */
+        /* But we have 4 icons, so we space them evenly */
+        
+        /* Let's re-space for 4 items: -72, -24, +24, +72 */
+        .pos-1 { transform: translateX(-50%) rotate(-70deg) translateY(-130px) rotate(70deg); }
+        .pos-2 { transform: translateX(-50%) rotate(-25deg) translateY(-130px) rotate(25deg); }
+        .pos-3 { transform: translateX(-50%) rotate(25deg) translateY(-130px) rotate(-25deg); }
+        .pos-4 { transform: translateX(-50%) rotate(70deg) translateY(-130px) rotate(-70deg); }
+
+        .icon-link:hover {
+            background-color: #764ba2;
+            color: white;
+            transform: scale(1.2) var(--original-transform); /* Keeps position but scales */
+        }
+
+        footer { text-align: center; padding: 20px; background: #333; color: #aaa; margin-top: 50px; }
+
+        @media (max-width: 600px) {
+            .contact-container { transform: scale(0.8); } /* Shrink slightly on mobile */
+        }
+    </style>
 </head>
 <body>
 
-    <header class="header">
-        <a href="#" class="logo">Portfolio.</a>
-
-        <nav class="navbar">
-            <a href="#home" class="active">Home</a>
-            <a href="#about">About</a>
-            <a href="#skills">Skills</a>
-            <a href="#projects">Projects</a> <a href="#contact">Contact</a>
-        </nav>
-
-        <div class="bx bx-menu" id="menu-icon"></div>
+    <header>
+        <h1>SMK Farabi</h1>
+        <p>Full Stack Developer</p>
+        <div class="designation">Founder of Humaymud Projects</div>
     </header>
 
-    <section class="home" id="home">
-        <div class="home-content">
-            <h3>Hello, It's Me</h3>
-            <h1>SMK Farabi</h1>
-            <h3>And I'm a <span class="multiple-text"></span></h3>
-            <p>BSc in Chemistry (2nd Year) at Jahangirnagar University. 
-            Merging scientific discipline with digital creativity.</p>
-            
-            <div class="social-media">
-                <a href="https://www.facebook.com/profile.php?id=61576848728650" target="_blank"><i class='bx bxl-facebook'></i></a>
-                <a href="https://www.linkedin.com/in/s-m-k-farabi2005" target="_blank"><i class='bx bxl-linkedin'></i></a>
-                <a href="mailto:smkfarabi@gmail.com"><i class='bx bxs-envelope'></i></a>
-            </div>
-            
-            <a href="mailto:smkfarabi@gmail.com" class="btn">Contact Me</a>
-        </div>
-
-        <div class="home-img">
-            <img src="farabi.jpg" alt="Profile Picture of SMK Farabi">
+    <section id="humaymud">
+        <div class="humaymud-section">
+            <h3><i class="fas fa-robot"></i> Humaymud Projects</h3>
+            <p>
+                An AI-based project making company. Currently unregistered, founded by SMK Farabi. 
+                We specialize in building intelligent solutions and automating the future.
+            </p>
         </div>
     </section>
 
-    <section class="about" id="about">
-        <div class="about-img">
-            <img src="farabi.jpg" alt="About Me">
-        </div>
-
-        <div class="about-content">
-            <h2 class="heading">About <span>Me</span></h2>
-            <h3>Aspiring Scientist & Web Developer</h3>
-            <p>
-                I am currently pursuing a BSc in Chemistry (2nd Year) at <strong>Jahangirnagar University</strong>. 
-                Beyond my academic studies, I am deeply involved in extracurricular activities:
-            </p>
+    <section id="projects">
+        <h2>My Projects</h2>
+        <div class="portfolio-grid">
             
-            <div class="club-activities">
-                <div class="club-item">
-                    <h4>Member at E-Business and Entrepreneurship Club, JU</h4>
-                    <ul>
-                        <li>Completed Campus Catalyst Program</li>
-                    </ul>
-                </div>
-                
-                <div class="club-item">
-                    <h4>Scientific Research Crew at Jahangirnagar Science Club</h4>
-                    <ul>
-                        <li>Volunteered at 7th National Science Fest</li>
-                        <li>Served as an Invigilator</li>
-                    </ul>
+            <div class="project-card">
+                <div class="card-content">
+                    <h3><i class="fas fa-mosque"></i> Namaz Time BD</h3>
+                    <p>A web application to check accurate prayer times in Bangladesh.</p>
+                    <a href="https://smkfarabi-stack.github.io/namaz-time-bd/" class="btn-visit" target="_blank">View Project</a>
                 </div>
             </div>
 
-            <p>
-                I pride myself on being a fast learner with high accuracy. My background in science has honed my analytical skills, while my role in clubs has developed my logistics and management capabilities.
-            </p>
-            <a href="#contact" class="btn">Let's Talk</a>
+            <div class="project-card">
+                <div class="card-content">
+                    <h3><i class="fas fa-user-circle"></i> My Personal Portfolio</h3>
+                    <p>The website you are looking at right now. Built with HTML, CSS, and hosted on GitHub.</p>
+                    <a href="#" class="btn-visit">You are here</a>
+                </div>
+            </div>
+
+            </div>
+    </section>
+
+    <section id="contact">
+        <h2>Contact Me</h2>
+        <div class="contact-container">
+            
+            <div class="orbit-icons">
+                <a href="https://github.com/smkfarabi-stack" target="_blank" class="icon-link pos-1">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="#" class="icon-link pos-2">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="#" class="icon-link pos-3">
+                    <i class="fab fa-facebook"></i>
+                </a>
+                <a href="mailto:your-email@example.com" class="icon-link pos-4">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+
+            <div class="center-btn">
+                Hire Me
+            </div>
         </div>
     </section>
 
-    <section class="skills" id="skills">
-        <h2 class="heading">My <span>Skills</span></h2>
-
-        <div class="skills-container">
-            <div class="skills-box">
-                <i class='bx bx-code-alt'></i>
-                <h3>Hard Skills</h3>
-                <p>Content Writing</p>
-                <p>Project management </p>
-                <p>Scientific Writing</p>
-                <p>Front End Web Development</p>
-                <p>Python & Backend (FastAPI)</p>
-                <p>Web Scraping (Playwright)</p>
-                <p>AI Integration </p>
-                <p>prompt programming </p>
-                
-            </div>
-
-            <div class="skills-box">
-                <i class='bx bx-user-voice'></i>
-                <h3>Soft Skills</h3>
-                <p>Fast Learning with Accuracy</p>
-                <p>Logistics & Management</p>
-                <p>Team Collaboration</p>
-            </div>
-        </div>
-    </section>
-
-   <section class="projects" id="projects">
-    <h2 class="heading">My <span>Projects</span></h2>
-
-    <div class="projects-container">
-        <div class="projects-box">
-            <i class='bx bx-search-alt'></i>
-            
-            <h3>HumayMud Search Engine</h3>
-            
-            <p>
-                An AI-powered vertical search engine designed to locate and verify academic resources (PDF/EPUB). 
-                It uses a multi-layer verification system to ensure links are safe.
-            </p>
-            
-            <ul style="text-align: left; margin: 15px 0; padding-left: 20px;">
-                <li><strong>AI:</strong> Google Gemini 1.5</li>
-                <li><strong>Core:</strong> Python, FastAPI, Playwright</li>
-            </ul>
-
-            <a href="https://github.com/smkfarabi-stack/humaymud-browser" target="_blank" class="btn">View on GitHub</a>
-        </div>
-    </div>
-</section>
-
-    <section class="contact" id="contact">
-        <h2 class="heading">Contact <span>Me</span></h2>
-
-        <form action="mailto:smkfarabi@gmail.com" method="post" enctype="text/plain">
-            <div class="input-box">
-                <input type="text" placeholder="Full Name">
-                <input type="email" placeholder="Email Address">
-            </div>
-            <div class="input-box">
-                <input type="number" placeholder="Mobile Number">
-                <input type="text" placeholder="Email Subject">
-            </div>
-            <textarea name="" id="" cols="30" rows="10" placeholder="Your Message"></textarea>
-            <input type="submit" value="Send Message" class="btn">
-        </form>
-    </section>
-
-    <footer class="footer">
-        <div class="footer-text">
-            <p>Copyright &copy; 2025 by SMK Farabi | All Rights Reserved.</p>
-        </div>
-
-        <div class="footer-iconTop">
-            <a href="#home"><i class='bx bx-up-arrow-alt'></i></a>
-        </div>
+    <footer>
+        <p>&copy; 2025 SMK Farabi. All Rights Reserved.</p>
     </footer>
-
-    <script src="https://unpkg.com/scrollreveal"></script>
-    <script src="https://unpkg.com/typed.js@2.0.15/dist/typed.umd.js"></script>
-    <script src="script.js"></script>
 
 </body>
 </html>
