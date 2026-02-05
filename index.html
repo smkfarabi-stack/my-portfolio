@@ -19,7 +19,6 @@
             width: 350px;
         }
 
-        /* The pulsating Contact Me button */
         .btn.alive {
             position: absolute;
             top: 10px;
@@ -35,7 +34,6 @@
             100% { transform: scale(1); box-shadow: 0 0 10px var(--main-color); }
         }
 
-        /* The curved line connecting the icons (The Arc) */
         .arc-line {
             position: absolute;
             width: 220px;
@@ -51,7 +49,6 @@
             pointer-events: none;
         }
 
-        /* Social Icons on the arc */
         .arc-icon {
             position: absolute;
             width: 55px;
@@ -78,7 +75,6 @@
             transform: scale(1.1) !important;
         }
 
-        /* Specific positions for the arc */
         .icon-1 { top: 60px; right: 280px; animation: slideOut 0.6s forwards 0.2s; }
         .icon-2 { top: 150px; right: 210px; animation: slideOut 0.6s forwards 0.4s; }
         .icon-3 { top: 190px; right: 100px; animation: slideOut 0.6s forwards 0.6s; }
@@ -108,7 +104,7 @@
             margin-bottom: 1rem;
         }
         .projects-box p, .skills-box p {
-            margin-bottom: 0.5rem; /* Reduced margin for list feel */
+            margin-bottom: 1rem;
         }
         
         .btn-sm {
@@ -122,6 +118,7 @@
             letter-spacing: .1rem;
             font-weight: 600;
             transition: .5s ease;
+            text-decoration: none;
         }
         .btn-sm:hover { box-shadow: none; }
     </style>
@@ -240,6 +237,13 @@
         <div class="projects-container">
             
             <div class="projects-box">
+                <i class='bx bx-message-square-dots'></i>
+                <h3>Humaymud Chats V3</h3>
+                <p>Advanced P2P communication platform featuring refined UI and improved connection protocols.</p>
+                <a href="https://smkfarabi-stack.github.io/humaymud-chats-v3/" target="_blank" class="btn-sm">View Project</a>
+            </div>
+
+            <div class="projects-box">
                 <i class='bx bx-time-five'></i>
                 <h3>Namaz Time BD</h3>
                 <p>An accurate prayer time checking application for Bangladesh.</p>
@@ -254,10 +258,10 @@
             </div>
 
             <div class="projects-box">
-                <i class='bx bx-video'></i>
-                <h3>Humaymud Chats</h3>
-                <p>A secure, P2P video calling and messaging system that respects privacy.</p>
-                <a href="https://smkfarabi-stack.github.io/humaymud-chats/" target="_blank" class="btn-sm">View Project</a>
+                <i class='bx bxs-chat'></i>
+                <h3>Humaymud Chats V2.5</h3>
+                <p>Enhanced real-time communication platform with optimized stability and UI.</p>
+                <a href="https://smkfarabi-stack.github.io/humaymud-chats-v2.5/" target="_blank" class="btn-sm">View Project</a>
             </div>
 
             <div class="projects-box">
@@ -268,17 +272,12 @@
             </div>
 
             <div class="projects-box">
-                <i class='bx bxs-chat'></i>
-                <h3>Humaymud Chats V2.5</h3>
-                <p>Enhanced real-time communication platform with optimized stability and UI.</p>
-                <a href="https://smkfarabi-stack.github.io/humaymud-chats-v2.5/" target="_blank" class="btn-sm">View Project</a>
+                <i class='bx bx-video'></i>
+                <h3>Humaymud Chats V1</h3>
+                <p>A secure, P2P video calling and messaging system that respects privacy.</p>
+                <a href="https://smkfarabi-stack.github.io/humaymud-chats/" target="_blank" class="btn-sm">View Project</a>
             </div>
 
-            <div class="projects-box">
-                <i class='bx bx-layer'></i>
-                <h3>Coming Soon</h3>
-                <p>More exciting projects are in the pipeline. Stay tuned!</p>
-            </div>
         </div>
     </section>
 
@@ -291,8 +290,7 @@
                 <h3>AI Innovation</h3>
                 <p>
                     <strong>Humaymud Projects</strong> is an AI-based project making company. 
-                    Currently unregistered, founded by <strong>SMK Farabi</strong>. 
-                    We are dedicated to automating the future and building intelligent solutions.
+                    Founded by <strong>SMK Farabi</strong>, we are dedicated to automating the future and building intelligent solutions.
                 </p>
             </div>
         </div>
