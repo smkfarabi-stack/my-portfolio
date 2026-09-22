@@ -1,0 +1,26 @@
+.generator-shell { padding-top: 14rem; }
+.generator-grid { display:grid; grid-template-columns:minmax(0, .95fr) minmax(0, 1.05fr); gap:2.2rem; align-items:start; }
+.generator-form,.output-panel { padding:2.4rem; }
+.type-switch { display:grid; grid-template-columns:1fr 1fr; gap:.6rem; padding:.5rem; background:rgba(255,255,255,.04); border:1px solid var(--glass-border); border-radius:1.2rem; margin-bottom:2rem; }
+.type-btn { border:0; border-radius:.9rem; padding:1.1rem; background:transparent; color:var(--muted); font:600 1.35rem Inter,sans-serif; cursor:pointer; transition:.3s ease; }
+.type-btn.active { color:#03111a; background:linear-gradient(135deg,var(--accent),#8df7ff); box-shadow:0 0 2rem rgba(41,240,211,.18); }
+.field { margin-bottom:1.4rem; }
+.field label { display:block; font-size:1.25rem; color:var(--muted); margin-bottom:.7rem; }
+.field input,.field textarea,.field select { width:100%; border:1px solid var(--glass-border); border-radius:1rem; padding:1.15rem 1.25rem; background:rgba(4,15,24,.62); color:var(--text); font:500 1.4rem Inter,sans-serif; transition:.25s ease; }
+.field input:focus,.field textarea:focus,.field select:focus { border-color:rgba(41,240,211,.7); box-shadow:0 0 0 4px rgba(41,240,211,.08); }
+.field textarea { resize:vertical; }
+.field select { color-scheme:dark; }
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:1.1rem; }
+.hidden-fields { display:none; }
+.check-field label { display:flex; align-items:center; gap:.8rem; cursor:pointer; color:var(--text); }
+.check-field input { width:auto; accent-color:var(--accent); }
+.full-btn { width:100%; justify-content:center; }
+.output-panel { position:sticky; top:10rem; overflow:hidden; }
+.output-top { display:flex; justify-content:space-between; align-items:end; gap:1rem; margin-bottom:1.5rem; }
+.output-top h2 { margin-top:.4rem; font:700 2rem 'Space Grotesk',sans-serif; }
+.copy-btn { border:1px solid var(--glass-border); background:rgba(255,255,255,.05); color:var(--text); padding:.9rem 1.2rem; border-radius:.9rem; cursor:pointer; transition:.25s ease; }
+.copy-btn:hover { border-color:var(--accent); color:var(--accent); }
+.output-panel pre { margin:0; min-height:25rem; max-height:58rem; overflow:auto; padding:1.7rem; border-radius:1.1rem; background:#020a11; border:1px solid rgba(255,255,255,.08); color:#b9ffef; font:500 1.28rem/1.7 ui-monospace,SFMono-Regular,Menlo,monospace; }
+.paste-help { margin-top:1.2rem; color:var(--muted); font-size:1.25rem; line-height:1.7; }
+.paste-help code { color:var(--accent); }
+@media (max-width:850px){ .generator-grid{grid-template-columns:1fr}.output-panel{position:static}.two-col{grid-template-columns:1fr}.generator-shell{padding-top:11rem} }

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Code Generator | SMK Farabi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"><link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/code-generator.css">
+</head>
+<body class="subpage generator-page">
+  <div class="site-atmosphere" aria-hidden="true"><span class="orb orb-a"></span><span class="orb orb-b"></span><span class="orb orb-c"></span><span class="molecule molecule-a"><i></i><i></i><i></i></span><span class="formula formula-a">e⁻</span><span class="formula formula-b">λ</span></div>
+  <header class="header"><a class="brand" href="index.html"><span class="brand-mark"><i class="bx bx-flask"></i></span><span>SMK <em>Farabi</em></span></a><nav class="navbar"><a href="index.html#home">Home</a><a href="projects.html">Projects</a><a href="publications.html">Research</a></nav><div class="header-actions"><a class="mini-code active" href="codegenerator.html"><i class="bx bx-code-alt"></i></a><button class="menu-btn" id="menu-icon"><i class="bx bx-menu"></i></button></div></header>
+  <main><section class="section generator-shell"><div class="section-heading reveal"><span class="section-tag">CONTENT TOOL</span><h1>Portfolio <span>Code Generator</span></h1><p>Fill in the form, generate the object, and paste it into the matching data file.</p></div>
+    <div class="generator-grid">
+      <form class="glass-card generator-form reveal" id="generator-form">
+        <div class="type-switch"><button type="button" class="type-btn active" data-type="project">Project</button><button type="button" class="type-btn" data-type="publication">Paper & Related</button></div>
+        <input type="hidden" id="content-type" value="project">
+        <div class="field"><label for="name">Name / Title</label><input id="name" required placeholder="e.g. Chemistry Syllabus App"></div>
+        <div class="field"><label for="description">Description</label><textarea id="description" rows="4" placeholder="Short description..."></textarea></div>
+        <div class="two-col">
+          <div class="field"><label for="link">Main Link</label><input id="link" required placeholder="https://..."></div>
+          <div class="field project-only"><label for="code">Code / GitHub Link</label><input id="code" placeholder="https://github.com/..." /></div>
+        </div>
+        <div class="two-col publication-only hidden-fields">
+          <div class="field"><label for="type">Type</label><select id="type"><option>Paper</option><option>Preprint</option><option>Poster</option><option>Conference</option><option>Thesis</option><option>Related</option></select></div>
+          <div class="field"><label for="year">Year</label><input id="year" placeholder="2026"></div>
+        </div>
+        <div class="field publication-only hidden-fields"><label for="venue">Journal / Conference / Venue</label><input id="venue" placeholder="Optional"></div>
+        <div class="field project-only"><label for="tech">Technologies (comma separated)</label><input id="tech" placeholder="JavaScript, HTML, CSS"></div>
+        <div class="field project-only"><label for="icon">Boxicons class</label><input id="icon" value="bx bx-flask" placeholder="bx bx-flask"></div>
+        <div class="field project-only check-field"><label><input id="featured" type="checkbox" checked> Show on home page</label></div>
+        <button class="btn btn-primary full-btn" type="submit">Generate Code <i class="bx bx-code-alt"></i></button>
+      </form>
+
+      <div class="glass-card output-panel reveal reveal-right"><div class="output-top"><div><span class="section-tag">OUTPUT</span><h2 id="output-title">Project object</h2></div><button class="copy-btn" id="copy-code" type="button"><i class="bx bx-copy"></i> Copy</button></div><pre id="code-output"><code>// Your generated code will appear here.</code></pre><div class="paste-help" id="paste-help"><strong>Paste location:</strong> <code>js/projects.js</code> → inside the <code>projects</code> array.</div></div>
+    </div>
+  </section></main>
+  <script src="js/code-generator.js"></script>
+</body></html>
