@@ -1,84 +1,242 @@
-const menuButton = document.querySelector('#menu-icon');
-const navbar = document.querySelector('.navbar');
-const header = document.querySelector('.header');
+(() => {
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+  const header = $('.header');
+  const menuButton = $('#menu-icon');
+  const navbar = $('.navbar');
+  const progressBar = $('#scroll-progress-bar');
+  const toast = $('#toast');
 
-if (menuButton && navbar) {
-  menuButton.addEventListener('click', () => {
-    navbar.classList.toggle('active');
-    const icon = menuButton.querySelector('i');
-    if (icon) icon.className = navbar.classList.contains('active') ? 'bx bx-x' : 'bx bx-menu';
-  });
-
-  navbar.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      navbar.classList.remove('active');
-      const icon = menuButton.querySelector('i');
-      if (icon) icon.className = 'bx bx-menu';
+  // Mobile navigation
+  if (menuButton && navbar) {
+    menuButton.addEventListener('click', () => {
+      const isOpen = navbar.classList.toggle('open');
+      menuButton.setAttribute('aria-expanded', String(isOpen));
+      menuButton.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+      const icon = $('i', menuButton);
+      if (icon) icon.className = isOpen ? 'bx bx-x' : 'bx bx-menu';
     });
-  });
-}
-
-window.addEventListener('scroll', () => {
-  if (header) header.classList.toggle('scrolled', window.scrollY > 24);
-});
-
-function escapeHTML(value = '') {
-  return String(value).replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
-}
-
-function projectCard(project) {
-  const tags = (project.tech || []).map(tag => `<span>${escapeHTML(tag)}</span>`).join('');
-  const liveButton = project.link ? `<a class="card-link" href="${escapeHTML(project.link)}" target="_blank" rel="noopener">Open Project <i class="bx bx-link-external"></i></a>` : '';
-  const codeButton = project.code ? `<a class="card-link secondary" href="${escapeHTML(project.code)}" target="_blank" rel="noopener">Source Code <i class="bx bx-github"></i></a>` : '';
-  return `<article class="project-card glass-card reveal"><div class="project-icon"><i class="${escapeHTML(project.icon || 'bx bx-flask')}"></i></div><div class="project-index">PROJECT</div><h3>${escapeHTML(project.name)}</h3><p>${escapeHTML(project.description)}</p><div class="tag-list small">${tags}</div><div class="card-actions">${liveButton}${codeButton}</div></article>`;
-}
-
-function publicationCard(item, full = false) {
-  const meta = [item.type, item.year, item.venue].filter(Boolean).map(escapeHTML);
-  return `<article class="publication-card glass-card reveal"><div class="pub-mark"><i class="bx bx-file"></i></div><div class="pub-main"><div class="pub-meta">${meta.join(' · ') || 'Research / Related'}</div><h3>${escapeHTML(item.name)}</h3>${item.description ? `<p>${escapeHTML(item.description)}</p>` : ''}<a class="text-link" href="${escapeHTML(item.link)}" target="_blank" rel="noopener">Open link <i class="bx bx-up-arrow-alt bx-rotate-45"></i></a></div></article>`;
-}
-
-const projectPreview = document.querySelector('#project-preview');
-const allProjects = document.querySelector('#all-projects');
-if (typeof projects !== 'undefined') {
-  const featured = projects.filter(p => p.featured);
-  if (projectPreview) projectPreview.innerHTML = (featured.length ? featured : projects).slice(0, 3).map(projectCard).join('');
-  if (allProjects) allProjects.innerHTML = projects.map(projectCard).join('');
-}
-
-const publicationPreview = document.querySelector('#publication-preview');
-const allPublications = document.querySelector('#all-publications');
-if (typeof publications !== 'undefined') {
-  if (publications.length) {
-    if (publicationPreview) publicationPreview.innerHTML = publications.slice(0, 4).map(item => publicationCard(item)).join('');
-    if (allPublications) allPublications.innerHTML = publications.map(item => publicationCard(item, true)).join('');
-  } else {
-    const empty = `<div class="empty-state glass-card"><i class="bx bx-flask"></i><h3>No publications added yet</h3><p>Research papers, posters, preprints, conference work, and related scientific material will appear here.</p></div>`;
-    if (publicationPreview) publicationPreview.innerHTML = empty;
-    if (allPublications) allPublications.innerHTML = empty;
+    $$('.navbar a').forEach(link => link.addEventListener('click', () => {
+      navbar.classList.remove('open');
+      menuButton.setAttribute('aria-expanded', 'false');
+      menuButton.setAttribute('aria-label', 'Open navigation');
+      const icon = $('i', menuButton);
+      if (icon) icon.className = 'bx bx-menu';
+    }));
   }
-}
 
-const revealObserver = new IntersectionObserver((entries, observer) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      observer.unobserve(entry.target);
+  // Scroll state and reading progress
+  let scrollTicking = false;
+  const updateScroll = () => {
+    const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = scrollable > 0 ? (window.scrollY / scrollable) * 100 : 0;
+    if (progressBar) progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+    if (header) header.classList.toggle('scrolled', window.scrollY > 20);
+    scrollTicking = false;
+  };
+  window.addEventListener('scroll', () => {
+    if (!scrollTicking) {
+      window.requestAnimationFrame(updateScroll);
+      scrollTicking = true;
     }
+  }, { passive: true });
+  updateScroll();
+
+  // Scroll reveal: graceful fallback for browsers without IntersectionObserver
+  const revealItems = $$('[data-reveal]');
+  if ('IntersectionObserver' in window) {
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -35px 0px' });
+    revealItems.forEach(item => revealObserver.observe(item));
+  } else {
+    revealItems.forEach(item => item.classList.add('is-visible'));
+  }
+
+  // Active navigation state
+  const navLinks = $$('.navbar a[href^="#"]');
+  const observedSections = navLinks.map(link => $(link.getAttribute('href'))).filter(Boolean);
+  if ('IntersectionObserver' in window && observedSections.length) {
+    const sectionObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`));
+      });
+    }, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
+    observedSections.forEach(section => sectionObserver.observe(section));
+  }
+
+  // Small rotating research keywords
+  const rotatingWord = $('#rotating-word');
+  const words = ['molecules', 'new reactions', 'drug design', 'chemical data'];
+  if (rotatingWord && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let wordIndex = 0;
+    window.setInterval(() => {
+      wordIndex = (wordIndex + 1) % words.length;
+      rotatingWord.classList.add('word-out');
+      window.setTimeout(() => {
+        rotatingWord.textContent = words[wordIndex];
+        rotatingWord.classList.remove('word-out');
+      }, 220);
+    }, 2600);
+  }
+
+  // Project cards, archive, search and category filters
+  const projectContainers = [$('#project-preview'), $('#all-projects')].filter(Boolean);
+  const searchInput = $('#project-search');
+  const filterButtons = $$('.filter-btn');
+  let activeFilter = 'all';
+  let searchTerm = '';
+
+  const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
+  const renderProject = project => {
+    const tags = (project.tech || []).map(tag => `<span>${escapeHTML(tag)}</span>`).join('');
+    const links = [
+      project.link ? `<a href="${escapeHTML(project.link)}" target="_blank" rel="noopener noreferrer">Open project <i class="bx bx-up-right-arrow-alt"></i></a>` : '',
+      project.code && project.code !== project.link ? `<a href="${escapeHTML(project.code)}" target="_blank" rel="noopener noreferrer">Source code <i class="bx bx-code-alt"></i></a>` : ''
+    ].filter(Boolean).join('');
+    return `<article class="project-card" data-category="${escapeHTML(project.category || 'other')}" data-search="${escapeHTML(`${project.name} ${project.description} ${(project.tech || []).join(' ')}`.toLowerCase())}">
+      <div class="project-card-top"><span class="project-kind">${escapeHTML(project.kind || 'SELECTED PROJECT')}</span><span class="project-icon"><i class="${escapeHTML(project.icon || 'bx bx-flask')}"></i></span></div>
+      <h3>${escapeHTML(project.name)}</h3><p>${escapeHTML(project.description)}</p><div class="project-tags">${tags}</div>
+      <div class="project-links">${links || '<span class="project-kind">DETAILS IN CV</span>'}</div></article>`;
+  };
+
+  projectContainers.forEach(container => {
+    if (typeof projects !== 'undefined') container.innerHTML = projects.map(renderProject).join('');
   });
-}, { threshold: 0.12 });
 
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  const applyProjectFilters = () => {
+    const allCards = $$('.project-card');
+    let visibleCount = 0;
+    allCards.forEach(card => {
+      const matchesCategory = activeFilter === 'all' || card.dataset.category === activeFilter;
+      const matchesSearch = !searchTerm || (card.dataset.search || '').includes(searchTerm);
+      const visible = matchesCategory && matchesSearch;
+      card.classList.toggle('is-hidden', !visible);
+      if (visible) visibleCount++;
+    });
+    const count = $('#project-result-count');
+    if (count) count.textContent = `${visibleCount} ${visibleCount === 1 ? 'project' : 'projects'} shown`;
+    const archiveCount = $('#archive-result-count');
+    if (archiveCount) archiveCount.textContent = `${visibleCount} ${visibleCount === 1 ? 'result' : 'results'}`;
+    const empty = $('#project-empty-state');
+    if (empty) empty.hidden = visibleCount !== 0;
+  };
+  filterButtons.forEach(button => button.addEventListener('click', () => {
+    activeFilter = button.dataset.filter || 'all';
+    filterButtons.forEach(item => item.classList.toggle('active', item === button));
+    applyProjectFilters();
+  }));
+  if (searchInput) searchInput.addEventListener('input', () => {
+    searchTerm = searchInput.value.trim().toLowerCase();
+    applyProjectFilters();
+  });
+  applyProjectFilters();
 
-const sectionLinks = [...document.querySelectorAll('.navbar a[href^="#"]')];
-const sections = [...document.querySelectorAll('main section[id]')];
-if (sectionLinks.length && sections.length) {
-  const sectionObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        sectionLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`));
+
+  // Selected coursework archive: year filters and live search.
+  const courseCards = $$('.course-card');
+  const courseFilterButtons = $$('.course-filter-btn');
+  const courseSearchInput = $('#course-search');
+  const courseGroups = $$('[data-course-group]');
+  const courseEmptyState = $('#course-empty-state');
+  const courseResultCount = $('#course-result-count');
+  const courseResultLabel = $('#course-result-label');
+  let activeCourseYear = 'all';
+  let courseSearchTerm = '';
+
+  const applyCourseFilters = () => {
+    let visibleCount = 0;
+    courseCards.forEach(card => {
+      const matchesYear = activeCourseYear === 'all' || card.dataset.courseYear === activeCourseYear;
+      const matchesSearch = !courseSearchTerm || (card.dataset.search || card.textContent.toLowerCase()).toLowerCase().includes(courseSearchTerm);
+      const visible = matchesYear && matchesSearch;
+      card.classList.toggle('is-hidden', !visible);
+      if (visible) visibleCount += 1;
+    });
+    courseGroups.forEach(group => {
+      const hasVisible = $$('.course-card:not(.is-hidden)', group).length > 0;
+      group.hidden = !hasVisible;
+      // Keep the archive compact by default; expand matching groups during filtering/search.
+      if (courseSearchTerm || activeCourseYear !== 'all') {
+        group.open = hasVisible;
+      } else {
+        group.open = group.dataset.courseGroup === '3';
       }
     });
-  }, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
-  sections.forEach(section => sectionObserver.observe(section));
-}
+    if (courseResultCount) courseResultCount.textContent = String(visibleCount);
+    if (courseResultLabel) {
+      const yearLabel = activeCourseYear === 'all' ? 'all academic years' : `Part ${['I', 'II', 'III', 'IV'][Number(activeCourseYear) - 1]}`;
+      courseResultLabel.textContent = `Showing ${visibleCount} ${visibleCount === 1 ? 'course' : 'courses'} · ${yearLabel}`;
+    }
+    if (courseEmptyState) courseEmptyState.hidden = visibleCount !== 0;
+  };
+
+  courseFilterButtons.forEach(button => button.addEventListener('click', () => {
+    activeCourseYear = button.dataset.courseFilter || 'all';
+    courseFilterButtons.forEach(item => {
+      const active = item === button;
+      item.classList.toggle('active', active);
+      item.setAttribute('aria-pressed', String(active));
+    });
+    applyCourseFilters();
+  }));
+  if (courseSearchInput) courseSearchInput.addEventListener('input', () => {
+    courseSearchTerm = courseSearchInput.value.trim().toLowerCase();
+    applyCourseFilters();
+  });
+  if (courseCards.length) applyCourseFilters();
+
+  // Publication archive renderer: only verified entries supplied in publications.js are shown.
+  const publicationContainers = [$('#publication-preview'), $('#all-publications')].filter(Boolean);
+  const renderPublication = item => {
+    const meta = [item.type, item.year, item.venue].filter(Boolean).map(escapeHTML).join(' · ');
+    return `<article class="publication-card"><div class="pub-mark"><i class="bx bx-file"></i></div><div><div class="pub-meta">${meta || 'RESEARCH OUTPUT'}</div><h3>${escapeHTML(item.name)}</h3><p>${escapeHTML(item.description || '')}</p>${item.link ? `<a class="text-link" href="${escapeHTML(item.link)}" target="_blank" rel="noopener noreferrer">Open source <i class="bx bx-up-right-alt"></i></a>` : ''}</div></article>`;
+  };
+  publicationContainers.forEach(container => {
+    const items = typeof publications !== 'undefined' ? publications : [];
+    if (items.length) container.innerHTML = items.map(renderPublication).join('');
+    else if (container.id === 'all-publications') container.innerHTML = `<div class="empty-state"><i class="bx bx-book-open"></i><h3>No research outputs listed yet</h3><p>The supplied CV describes research interests but does not list papers, preprints or conference publications. This archive is ready for verified work to be added when available.</p></div>`;
+  });
+
+  // Clipboard helper and small accessible toast
+  let toastTimer;
+  const showToast = message => {
+    if (!toast) return;
+    toast.textContent = message;
+    toast.classList.add('show');
+    window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(() => toast.classList.remove('show'), 2300);
+  };
+  const copyEmailButton = $('#copy-email');
+  if (copyEmailButton) copyEmailButton.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText('smkfarabi@gmail.com');
+      showToast('Email address copied.');
+    } catch {
+      showToast('Please copy: smkfarabi@gmail.com');
+    }
+  });
+
+  // Contact form uses the visitor's default mail application (no backend implied).
+  const contactForm = $('#contact-form');
+  if (contactForm) contactForm.addEventListener('submit', event => {
+    event.preventDefault();
+    if (!contactForm.reportValidity()) return;
+    const data = new FormData(contactForm);
+    const name = String(data.get('name') || '').trim();
+    const email = String(data.get('email') || '').trim();
+    const message = String(data.get('message') || '').trim();
+    const subject = encodeURIComponent(`Portfolio enquiry from ${name}`);
+    const body = encodeURIComponent(`${message}\n\n— ${name}\n${email}`);
+    window.location.href = `mailto:smkfarabi@gmail.com?subject=${subject}&body=${body}`;
+  });
+
+  const year = $('#current-year');
+  if (year) year.textContent = String(new Date().getFullYear());
+})();

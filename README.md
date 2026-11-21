@@ -1,72 +1,59 @@
-# SMK Farabi Portfolio — Glass Chemistry Edition
+# SMK Farabi — Research-focused Portfolio
 
-A static portfolio redesign using a chemistry-inspired glassmorphism visual system, animated molecule/orbit motifs, responsive layouts, and data-driven Project + Published Papers & Related pages.
+A responsive, static portfolio designed around a chemistry undergraduate profile and research direction. The visual system uses white, black, red and orange with editorial typography, glassmorphism surfaces, restrained motion and scientific-inspired graphical details.
 
-## Structure
+## Open locally
 
-```text
-my-portfolio-upgraded/
-├── index.html                 # Main portfolio landing page
-├── projects.html              # Full projects archive
-├── publications.html          # Published Papers & Related archive
-├── codegenerator.html         # Generates paste-ready data objects
-├── assets/
-│   └── images/
-│       ├── pic1.jpg           # Hero image
-│       └── pic2.jpg           # About/research image
-├── css/
-│   ├── style.css              # Main design system + responsive UI
-│   └── code-generator.css     # Generator page styles
-└── js/
-    ├── app.js                 # Navigation, rendering, reveal animations
-    ├── projects.js            # EDIT THIS to add projects
-    ├── publications.js        # EDIT THIS to add papers/research
-    └── code-generator.js      # Generator logic
-```
+Open `index.html` in a browser. No build step, package manager or server is required.
 
-## Add a Project
+## Main sections
 
-1. Open `codegenerator.html`.
-2. Select **Project**.
-3. Fill in the project name, live link, code/GitHub link, technologies, and icon.
-4. Click **Generate Code**.
-5. Click **Copy**.
-6. Open `js/projects.js`.
-7. Paste the generated object inside the `projects` array, after the previous object.
-8. Save and refresh `projects.html` or the home page.
+- **Overview:** profile introduction, portrait, contact links and CV download.
+- **Profile:** academic status, university and long-term academic goal.
+- **Research direction:** organic synthesis, medicinal chemistry and computer-aided drug design.
+- **Selected coursework:** compact, expandable Part I–IV course archive directly after the research direction section, with search and year filters.
+- **Toolkit:** bold, high-contrast skill chips for PyMOL, Avogadro, DataWarrior, Python, JavaScript and other CV-listed skills.
+- **Projects:** CV-selected technical projects with filtering and search.
+- **Academic community:** ACS International Student Chapter, JUSC, National Science Fest and EEC JU.
+- **Research output:** reserved for verified papers and academic contributions; no publications are fabricated.
 
-You can also add objects manually using the same fields.
+## Update the portfolio
 
-## Add a Paper / Research Item
+### Edit projects
+Open `js/projects.js` and add an object to the `projects` array. Fields include:
 
-1. Open `codegenerator.html`.
-2. Select **Paper & Related**.
-3. Fill in the title, type, year, venue, description, and link.
-4. Generate + copy.
-5. Paste the object inside the `publications` array in `js/publications.js`.
+- `name`, `description`
+- `link` (live project URL; use an empty string if unavailable)
+- `code` (source URL; use an empty string if unavailable)
+- `tech` (array of tags)
+- `icon` (Boxicons class)
+- `category` (`communication`, `web` or `systems`)
+- `kind` (small category label)
 
-Supported types include Paper, Preprint, Poster, Conference, Thesis, and Related.
+The homepage and `projects.html` render from this file. Search and category filters are built in.
 
-## Images
+### Add a research output
+Open `js/publications.js` and add only a verified item with `name`, `type`, `year`, `venue`, `description` and `link`. The research archive explains that the supplied CV does not currently list publication records.
 
-The website references exactly two image files:
+### Update the CV
+Replace `assets/SMK-Farabi-CV.pdf` with the updated PDF, keeping the same filename so the download links continue to work.
 
-- `assets/images/pic1.jpg`
-- `assets/images/pic2.jpg`
+### Replace portrait images
+- `assets/images/pic1.jpg` — homepage portrait.
+- `assets/images/pic2.jpg` — retained original secondary image for future use.
 
-Replace these files with your preferred two photos without changing the HTML.
+## Included interactions
 
-## Design Features
+- Responsive mobile navigation with accessible expanded state.
+- Scroll reading-progress bar and active section navigation.
+- Intersection-based reveal motion, with reduced-motion support.
+- Glassmorphism navigation, skill cards, profile panels and coursework cards.
+- Compact expandable coursework groups, search and Part I–IV filters with live result counts.
+- Rotating research keywords.
+- Project category filtering and live text search.
+- Copy-email control and mailto contact form (no backend or message storage).
+- Downloadable CV PDF.
 
-- Dark chemistry-inspired palette with aqua/teal + violet accents.
-- Glassmorphism panels with layered blur, borders, and depth.
-- Animated molecule diagrams, orbit rings, electrons, floating formulas, and scanline effects.
-- Scroll-triggered reveal transitions using native `IntersectionObserver`.
-- Hover lift/depth effects for cards and buttons.
-- Responsive navigation and card layouts.
-- Reduced-motion support for accessibility.
-- No ScrollReveal or Typed.js dependency required.
+## Deployment
 
-## Personalization
-
-Most visible content can be changed directly in `index.html`. Dynamic project and publication content belongs in the two dedicated JS files so the homepage remains easy to maintain.
+This is a static website and can be deployed to GitHub Pages, Cloudflare Pages, Netlify or any static hosting service. Keep the folder structure intact when uploading.

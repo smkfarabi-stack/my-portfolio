@@ -82,8 +82,9 @@ const menuButton = document.querySelector('#menu-icon');
 const navbar = document.querySelector('.navbar');
 if (menuButton && navbar) {
   menuButton.addEventListener('click', () => {
-    navbar.classList.toggle('active');
+    const isOpen = navbar.classList.toggle('open');
+    menuButton.setAttribute('aria-expanded', String(isOpen));
     const icon = menuButton.querySelector('i');
-    if (icon) icon.className = navbar.classList.contains('active') ? 'bx bx-x' : 'bx bx-menu';
+    if (icon) icon.className = isOpen ? 'bx bx-x' : 'bx bx-menu';
   });
 }

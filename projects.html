@@ -2,15 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="SMK Farabi projects archive."><title>Projects | SMK Farabi</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg"><meta name="theme-color" content="#fffdfa">
+  <meta name="description" content="Selected technical and computational projects by SMK Farabi.">
+  <title>Projects — SMK Farabi</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"><link rel="stylesheet" href="css/style.css">
 </head>
 <body class="subpage">
-  <div class="site-atmosphere" aria-hidden="true"><span class="orb orb-a"></span><span class="orb orb-b"></span><span class="orb orb-c"></span><span class="molecule molecule-a"><i></i><i></i><i></i></span><span class="formula formula-a">π</span><span class="formula formula-b">C₆H₆</span></div>
-  <header class="header" id="header"><a class="brand" href="index.html"><span class="brand-mark"><i class="bx bx-flask"></i></span><span>SMK <em>Farabi</em></span></a><nav class="navbar"><a href="index.html#home">Home</a><a href="index.html#about">About</a><a href="index.html#skills">Skills</a><a class="active" href="projects.html">Projects</a><a href="publications.html">Research</a><a href="index.html#contact">Contact</a></nav><div class="header-actions"><a class="mini-code" href="codegenerator.html"><i class="bx bx-code-alt"></i></a><button class="menu-btn" id="menu-icon"><i class="bx bx-menu"></i></button></div></header>
-  <main><section class="subhero section"><div class="section-heading reveal"><span class="section-tag">PROJECT ARCHIVE</span><h1>Things I've <span>built.</span></h1><p>Keep adding entries to <code>js/projects.js</code>. The page will render them automatically.</p></div><div class="cards-grid full-grid" id="all-projects"></div></section></main>
-  <footer class="footer"><div><a class="brand" href="index.html"><span class="brand-mark"><i class="bx bx-flask"></i></span><span>SMK <em>Farabi</em></span></a><p>© 2026 SMK Farabi · Chemistry × Digital</p></div><a class="back-top" href="index.html"><i class="bx bx-left-arrow-alt"></i></a></footer>
+  <div class="scroll-progress"><span id="scroll-progress-bar"></span></div>
+  <header class="header" id="header"><a class="brand" href="index.html"><span class="brand-mark">F<span>.</span></span><span class="brand-name">SMK FARABI</span></a><nav class="navbar" id="primary-navigation"><a href="index.html#home">Overview</a><a href="index.html#profile">Profile</a><a href="research.html">Research</a><a href="index.html#toolkit">Toolkit</a><a href="index.html#coursework">Coursework</a><a class="active" href="projects.html">Projects</a><a href="index.html#community">Community</a></nav><div class="header-actions"><a class="header-contact" href="index.html#contact">Let's talk <i class="bx bx-arrow-up-right"></i></a><button class="menu-btn" id="menu-icon" type="button" aria-label="Open navigation" aria-controls="primary-navigation" aria-expanded="false"><i class="bx bx-menu"></i></button></div></header>
+  <main><section class="section subhero">
+    <div class="section-heading" data-reveal><span class="section-index">PROJECT ARCHIVE / 04</span><h1>Ideas into<br><span>working tools.</span></h1><p>A curated overview of technical and computational projects. The descriptions reflect the supplied CV and the project information already present in this portfolio.</p><div class="subpage-header-note"><i class="bx bx-code-alt"></i> Building at the intersection of practical needs and digital experimentation. <a class="content-tool-link" href="codegenerator.html">Open portfolio content tool <i class="bx bx-up-right-arrow-alt"></i></a></div></div>
+    <div class="archive-tools" data-reveal><div class="filter-list" role="group" aria-label="Filter projects"><button class="filter-btn active" type="button" data-filter="all">All</button><button class="filter-btn" type="button" data-filter="communication">Communication</button><button class="filter-btn" type="button" data-filter="web">Web apps</button><button class="filter-btn" type="button" data-filter="systems">Systems</button></div><label class="project-search"><i class="bx bx-search"></i><input type="search" id="project-search" placeholder="Search projects..." aria-label="Search projects"></label></div>
+    <div class="archive-grid" id="all-projects" aria-live="polite"></div><div class="project-footer"><span id="archive-result-count">Selected projects</span><a class="inline-link" href="index.html#projects">Back to overview <i class="bx bx-arrow-up-right"></i></a></div>
+  </section></main>
+  <footer class="footer"><a class="brand" href="index.html"><span class="brand-mark">F<span>.</span></span><span class="brand-name">SMK FARABI</span></a><p>CHEMISTRY · RESEARCH · COMPUTING <span>© <span id="current-year">2026</span> SMK Farabi</span></p><a class="back-top" href="#"><i class="bx bx-arrow-to-top"></i></a></footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="js/projects.js"></script><script src="js/app.js"></script>
 </body></html>
